@@ -1,5 +1,6 @@
 package com.bucketNote.bucketNote.service.user;
 
+import com.bucketNote.bucketNote.app.dto.UserCustomDto;
 import com.bucketNote.bucketNote.domain.entity.User;
 import com.bucketNote.bucketNote.apiPayload.exception.UserException;
 import com.bucketNote.bucketNote.jwt.JWTUtil;
@@ -12,8 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -79,6 +82,15 @@ public class UserAccountServiceImpl implements UserAccountService{
         User updateUser = user.get();
         updateUser.setNickname(newNickname);
         userRepository.save(updateUser);
+    }
+    public List<UserCustomDto.UserSearchDto> getUserIdsByKeyword(String keyword) {
+        List<User> users = userRepository.findByEmailContainingOrNameContaining(keyword, keyword);
+        if (users.isEmpty()) {
+            throw new IllegalArgumentException("해당 키워드로 검색된 사용자가 없습니다.");
+        }
+        return users.stream()
+                .map(user -> new UserCustomDto.UserSearchDto(user.getId(), user.getName(), user.getEmail()))
+                .collect(Collectors.toList());
     }
 
     @Override

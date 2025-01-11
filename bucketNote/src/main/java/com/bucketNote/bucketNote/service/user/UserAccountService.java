@@ -1,7 +1,9 @@
 package com.bucketNote.bucketNote.service.user;
 
+import com.bucketNote.bucketNote.app.dto.UserCustomDto;
 import com.bucketNote.bucketNote.domain.entity.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserAccountService {
@@ -14,4 +16,5 @@ public interface UserAccountService {
     void deleteUser(Long userId);
     void logout(String token);
     String getNickname(Long userId);
+    public List<UserCustomDto.UserSearchDto> getUserIdsByKeyword(String keyword);
 }

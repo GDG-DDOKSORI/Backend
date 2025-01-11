@@ -24,6 +24,7 @@ public enum Status {
     NICKNAME_GET_SUCCESS("200", "SUCCESS", "닉네임을 읽었습니다."),
     NICKNAME_DUPLICATE("409", "FAILURE", "이미 존재하는 닉네임입니다."),
     LEAVE_SUCCESS("200", "SUCCESS", "회원 탈퇴를 완료했습니다."),
+    USER_ID_PRESENT("200", "SUCCESS", "유저 아이디 반환을 성공했습니다."),
     //버킷리스트
     BUCKETLIST_UPDATE_SUCCESS("200", "SUCCESS", "버킷리스트를 업데이트했습니다."),
     BUCKETLIST_DELETE_SUCCESS("200", "SUCCESS", "버킷리스트를 삭제했습니다."),

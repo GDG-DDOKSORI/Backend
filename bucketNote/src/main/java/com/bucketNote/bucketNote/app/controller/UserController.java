@@ -2,11 +2,14 @@ package com.bucketNote.bucketNote.app.controller;
 
 import com.bucketNote.bucketNote.apiPayload.ApiResponse;
 import com.bucketNote.bucketNote.apiPayload.Status;
+import com.bucketNote.bucketNote.app.dto.UserCustomDto;
 import com.bucketNote.bucketNote.service.user.UserAccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -46,6 +49,12 @@ public class UserController {
         Long userId = userAccountService.getUserIdFromToken(token);
         userAccountService.deleteUser(userId);
         return ApiResponse.onSuccess(Status.LEAVE_SUCCESS, null);
+    }
+    @Operation(summary = "ID 검색")
+    @GetMapping("/api/user/search")
+    public ApiResponse<?> searchUserIds(@RequestParam String keyword) {
+        List<UserCustomDto.UserSearchDto> userIds = userAccountService.getUserIdsByKeyword(keyword);
+        return ApiResponse.onSuccess(Status.USER_ID_PRESENT, userIds);
     }
 }
 

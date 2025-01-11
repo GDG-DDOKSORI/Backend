@@ -3,6 +3,9 @@ package com.bucketNote.bucketNote.app.dto;
 
 import com.bucketNote.bucketNote.domain.entity.User;
 import com.bucketNote.bucketNote.domain.entity.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,7 +16,14 @@ public class UserCustomDto implements UserDetails {
 
     private final User user;
     public UserCustomDto(User user) {this.user = user;}
-
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UserSearchDto {
+        private Long id;
+        private String name;
+        private String email;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
 
