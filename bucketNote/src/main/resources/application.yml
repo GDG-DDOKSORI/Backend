@@ -47,9 +47,9 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    url: jdbc:mysql://ttoksori:3306/bucketNote?useSSL=false
-    username: ${LOCAL_USERNAME}
-    password: ${LOCAL_PASSWORD}
+      url: jdbc:mysql://${DATASOURCE_URL}
+      username: ${DATASOURCE_USERNAME}
+      password: ${DATASOURCE_PASSWORD}
 
   logging:
     level:
