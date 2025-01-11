@@ -29,5 +29,7 @@ public class BucketList {
     @Column(nullable = false, updatable = false, columnDefinition = "YEAR")
     private Integer createdYear = LocalDate.now().getYear(); // 현재 연도만 저장
 
+    @Column(nullable = true)
+    private Boolean isAchieved; // 목표 달성 여부
 }
 

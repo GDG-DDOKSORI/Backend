@@ -73,7 +73,29 @@ public class BucketListController {
         Long userId = userAccountService.getUserIdFromToken(token);
         // 소유 여부 확인
         boolean isOwner = bucketListService.validateBucketList(userId, bucketListId);
-        return ApiResponse.onSuccess(Status.BUCKETLIST_UPDATE_SUCCESS, isOwner);
+        return ApiResponse.onSuccess(Status.BUCKETLIST_CHECK_SUCCESS, isOwner);
+
+    }
+    @Operation(summary = "성공 여부 확인")
+    @GetMapping("/{bucketListId}/is-achieved")
+    public ApiResponse<?> isAchieved(@PathVariable Long bucketListId) {
+        Boolean isAchieved = bucketListService.isAchieved(bucketListId);
+        // null 값 처리
+        if (isAchieved == null) {
+            return ApiResponse.onSuccess(Status.BUCKETLIST_ACHIEVE_SUCCESS, null);
+        }
+        return ApiResponse.onSuccess(Status.BUCKETLIST_ACHIEVE_SUCCESS, isAchieved);
+    }
+    @Operation(summary = "성공 여부 변경")
+    @PutMapping("/{bucketListId}/achieve")
+    public ApiResponse<?> updateAchieveStatus(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Long bucketListId,
+            @RequestParam(required = false) boolean isAchieved) {
+        Long userId = userAccountService.getUserIdFromToken(token);
+        // 서비스 호출
+        bucketListService.updateAchieveStatus(userId, bucketListId, isAchieved);
+        return ApiResponse.onSuccess(Status.BUCKETLIST_UPDATE_SUCCESS, null);
     }
 
 

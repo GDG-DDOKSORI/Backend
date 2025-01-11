@@ -62,5 +62,29 @@ public class BucketListServiceImpl implements BucketListService{
     public boolean validateBucketList(Long userId, Long bucketListId) {
         return bucketListRepository.existsByIdAndUserId(bucketListId, userId);
     }
+    @Override
+    public Boolean isAchieved(Long bucketListId) {
+        return bucketListRepository.findById(bucketListId)
+                .map(BucketList::getIsAchieved) // null 가능
+                .orElse(null); // 없으면 null 반환
+    }
+    @Override
+    public void updateAchieveStatus(Long userId, Long bucketListId, Boolean isAchieved) {
+        // 버킷리스트 조회
+        BucketList bucketList = bucketListRepository.findById(bucketListId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 버킷리스트입니다."));
+
+        // 사용자 소유 여부 확인
+        if (!validateBucketList(userId, bucketListId)) {
+            throw new IllegalArgumentException("사용자가 소유한 버킷리스트가 아닙니다.");
+        }
+
+        // 목표 달성 여부 변경
+        bucketList.setIsAchieved(isAchieved);
+
+        // 저장
+        bucketListRepository.save(bucketList);
+    }
+
 
 }

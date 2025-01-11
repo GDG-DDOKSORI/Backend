@@ -11,4 +11,6 @@ public interface BucketListService {
     public BucketList updateBucketList(Long bucketListId, Long userId, String goalText);
     public void deleteBucketList(Long bucketListId, Long userId);
     public boolean validateBucketList(Long userId, Long bucketListId);
+    public Boolean isAchieved(Long bucketListId);
+    public void updateAchieveStatus(Long userId, Long bucketListId, Boolean isAchieved);
 }
