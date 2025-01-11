@@ -18,9 +18,13 @@ security:
   kakao:
     client_id: ${CLIENT_ID}
     redirect_uri: ${REDIRECT_URI}
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: alpha
+    tagsSorter: alpha
 
-news:
-  news_api_key: ${NEWS_API_KEY}
-  newsdata_api_key : ${NEWSDATA_API_KEY}
 
 

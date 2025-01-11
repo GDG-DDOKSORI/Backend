@@ -46,54 +46,81 @@ public class KakaoLoginServiceImpl implements KakaoLoginService{
                 HttpMethod.POST,
                 kakaoTokenRequest,
                 String.class
-        ); // Request to Kakao
+        );
 
         ObjectMapper objectMapper = new ObjectMapper();
-        KakaoLoginDto.KakaoTokenResponseDto tokenResponseDto = new KakaoLoginDto.KakaoTokenResponseDto();
+        KakaoLoginDto.KakaoTokenResponseDto tokenResponseDto;
 
-        try{
+        try {
             tokenResponseDto = objectMapper.readValue(response.getBody(), KakaoLoginDto.KakaoTokenResponseDto.class);
-        }catch(JsonMappingException e){
-            e.printStackTrace();
-        }catch (JsonProcessingException e){
-            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to parse token response", e);
         }
-        return tokenResponseDto.getAccess_token();
+
+        String accessToken = tokenResponseDto.getAccess_token();
+
+        // Access Token 유효성 확인
+        validateAccessToken(accessToken);
+
+        return accessToken;
+    }
+
+    private void validateAccessToken(String accessToken) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(
+                    "https://kapi.kakao.com/v1/user/access_token_info",
+                    HttpMethod.GET,
+                    request,
+                    String.class
+            );
+
+            System.out.println("토큰 유효성 확인 성공: " + response.getBody());
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid Access Token: " + accessToken, e);
+        }
     }
 
     @Override
     public KakaoLoginDto.KakaoUserInfoDto getKakaoUserInfo(String token) {
-        RestTemplate userRt = new RestTemplate(); // Http
+        RestTemplate userRt = new RestTemplate();
 
-        HttpHeaders userHeader = new HttpHeaders(); // Http header
+        HttpHeaders userHeader = new HttpHeaders();
         userHeader.add("Authorization", "Bearer " + token); // Bearer + 토큰
         userHeader.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
-        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest = new HttpEntity<>(userHeader);
+        HttpEntity<Void> kakaoProfileRequest = new HttpEntity<>(userHeader);
 
-
-        ResponseEntity<String> response = userRt.exchange(
-                "https://kapi.kakao.com/v2/user/me",
-                HttpMethod.POST,
-                kakaoProfileRequest,
-                String.class
-        );
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        KakaoLoginDto.KakaoUserInfoResponseDto kakaoUserInfoResponseDto = new KakaoLoginDto.KakaoUserInfoResponseDto();
-
-        try{
-            kakaoUserInfoResponseDto = objectMapper.readValue(response.getBody(), KakaoLoginDto.KakaoUserInfoResponseDto.class);
-        }catch(JsonMappingException e){
-            e.printStackTrace();
-        }catch (JsonProcessingException e){
-            e.printStackTrace();
+        ResponseEntity<String> response;
+        try {
+            response = userRt.exchange(
+                    "https://kapi.kakao.com/v2/user/me",
+                    HttpMethod.POST,
+                    kakaoProfileRequest,
+                    String.class
+            );
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to fetch Kakao user info", e);
         }
 
-        KakaoLoginDto.KakaoUserInfoDto dto = new KakaoLoginDto.KakaoUserInfoDto().builder()
+        ObjectMapper objectMapper = new ObjectMapper();
+        KakaoLoginDto.KakaoUserInfoResponseDto kakaoUserInfoResponseDto;
+
+        try {
+            kakaoUserInfoResponseDto = objectMapper.readValue(response.getBody(), KakaoLoginDto.KakaoUserInfoResponseDto.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to parse Kakao user info response", e);
+        }
+
+        return KakaoLoginDto.KakaoUserInfoDto.builder()
                 .email(kakaoUserInfoResponseDto.getKakao_account().getEmail())
                 .build();
-
-        return dto;
     }
+
 }

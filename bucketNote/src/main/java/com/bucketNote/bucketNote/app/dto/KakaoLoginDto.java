@@ -1,5 +1,6 @@
 package com.bucketNote.bucketNote.app.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +19,8 @@ public class KakaoLoginDto {
         private int expires_in;
         private String scope;
         private int refresh_token_expires_in;
+        @JsonIgnore
+        private String id_token;
     }
 
     @Getter
@@ -37,6 +40,9 @@ public class KakaoLoginDto {
             private Boolean is_email_valid;
             private Boolean is_email_verified;
             private String email;
+
+
+
         }
     }
 

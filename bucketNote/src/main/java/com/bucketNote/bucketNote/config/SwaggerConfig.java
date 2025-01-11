@@ -41,6 +41,7 @@ public class SwaggerConfig {
         SecurityRequirement securityRequirement = new SecurityRequirement().addList("BearerAuth");
 
         return new OpenAPI()
+                .openapi("3.0.0") // OpenAPI 버전 필드 추가
                 .components(new Components().addSecuritySchemes("BearerAuth", securityScheme))
                 .info(info)
                 .addSecurityItem(securityRequirement)

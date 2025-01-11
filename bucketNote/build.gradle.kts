@@ -1,7 +1,9 @@
 plugins {
 	java
-	id("org.springframework.boot") version "3.4.1"
-	id("io.spring.dependency-management") version "1.1.7"
+	id("org.springframework.boot") version "3.3.1"
+	id("io.spring.dependency-management") version "1.1.6"
+	kotlin("jvm") version "1.9.10"
+	kotlin("plugin.spring") version "1.9.10"
 }
 
 group = "com.bucketNote"
@@ -50,7 +52,10 @@ dependencies {
 	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
 	// SpringDoc
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
+	// SpringDoc
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.3")
+	 // 최신 버전 강제
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
 	// Lombok
 	compileOnly("org.projectlombok:lombok")
@@ -61,7 +66,9 @@ dependencies {
 	runtimeOnly("com.mysql:mysql-connector-j")
 
 	// Test Libraries
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-test") {
+		exclude(module = "mockito-core") // 충돌 방지
+	}
 	testImplementation("org.springframework.security:spring-security-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
