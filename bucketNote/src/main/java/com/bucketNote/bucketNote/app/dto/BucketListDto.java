@@ -26,7 +26,17 @@ public class BucketListDto {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class BucketListEditDto {
+        private Long bucketListId;
+        private String goalText;
+
+    }
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class BucketListCreateDto {
         private String goalText;
     }
+
 }

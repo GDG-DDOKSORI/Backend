@@ -31,6 +31,7 @@ public enum Status {
     BUCKETLIST_READ_SUCCESS("200", "SUCCESS", "버킷리스트를 읽어왔습니다."),
     COMMENT_ADD_SUCCESS("200", "SUCCESS", "응원글 추가를 성공했습니다."),
     COMMENT_READ_SUCCESS("200", "SUCCESS", "응원글 조회를 성공했습니다."),
+    VOTE_RESULTS_FETCH_SUCCESS("200", "SUCCESS", "투표 조회 성공했습니다"),
     VOTE_SUCCESS("200", "SUCCESS", "투표에 성공했습니다");
     private final String code;
     private final String result;

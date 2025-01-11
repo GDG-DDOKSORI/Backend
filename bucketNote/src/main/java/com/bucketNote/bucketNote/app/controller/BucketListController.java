@@ -16,14 +16,18 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "📄 버킷리스트", description = "버킷리스트 관련 API")
+@RequestMapping("/api/bucketList")
 public class BucketListController {
     private final BucketListService bucketListService;
     private final UserAccountService userAccountService;
     @Operation(summary = "버킷리스트 수정")
     @PatchMapping("/edit")
-    public ApiResponse<?> updateMemo(@RequestHeader("Authorization") String token, @RequestBody BucketListDto.BucketListRequestDto dto){
-        Long userId = userAccountService.getUserIdFromToken(token);
-        bucketListService.updateBucketList(userId, dto.getBucketListId(), dto.getGoalText());
+    public ApiResponse<?> updateBucketList(
+            @RequestHeader("Authorization") String token,
+            @RequestBody BucketListDto.BucketListEditDto dto
+    ) {
+        Long userId = userAccountService.getUserIdFromToken(token); // Bearer 토큰에서 사용자 ID 추출
+        bucketListService.updateBucketList(userId, dto.getBucketListId(), dto.getGoalText()); // 수정 요청
         return ApiResponse.onSuccess(Status.BUCKETLIST_UPDATE_SUCCESS, null);
     }
 

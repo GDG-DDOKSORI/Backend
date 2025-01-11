@@ -41,15 +41,16 @@ public class BucketListServiceImpl implements BucketListService{
 
 
     // 특정 ID의 버킷리스트 조회 (유저 ID 포함)
-    public BucketList getBucketListById(Long bucketListId, Long userId) {
+    @Override
+    public BucketList getBucketListById(Long userId, Long bucketListId) {
         return bucketListRepository.findByIdAndUserId(bucketListId, userId)
-                .orElseThrow(() -> new IllegalArgumentException("BucketList not found for userId: " + userId + " and bucketListId: " + bucketListId));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 버킷리스트입니다. userId: " + userId + ", bucketListId: " + bucketListId));
     }
 
     // 버킷리스트 내용 업데이트
-    public BucketList updateBucketList(Long bucketListId, Long userId, String goalText) {
-        BucketList bucketList = getBucketListById(bucketListId, userId);
-        bucketList.setGoalText(goalText); // 내용 업데이트
+    public BucketList updateBucketList(Long userId, Long bucketListId, String goalText) {
+        BucketList bucketList = getBucketListById(userId, bucketListId);
+        bucketList.setGoalText(goalText);
         return bucketListRepository.save(bucketList);
     }
 
@@ -57,5 +58,8 @@ public class BucketListServiceImpl implements BucketListService{
     public void deleteBucketList(Long bucketListId, Long userId) {
         BucketList bucketList = getBucketListById(bucketListId, userId);
         bucketListRepository.delete(bucketList);
+    }
+    public boolean validateBucketList(Long userId, Long bucketListId) {
+        return bucketListRepository.existsByIdAndUserId(bucketListId, userId);
     }
 }

@@ -1,6 +1,8 @@
 package com.bucketNote.bucketNote.app.controller;
 
 import com.bucketNote.bucketNote.apiPayload.ApiResponse;
+import com.bucketNote.bucketNote.app.dto.BucketListDto;
+import com.bucketNote.bucketNote.app.dto.CommentDto;
 import com.bucketNote.bucketNote.domain.entity.Comment;
 import com.bucketNote.bucketNote.service.comment.CommentService;
 import com.bucketNote.bucketNote.service.user.UserAccountService;
@@ -24,17 +26,16 @@ public class CommentController {
     @Operation(summary = "댓글 추가")
     public ApiResponse<?> addComment(
             @RequestHeader("Authorization") String token,
-            @PathVariable Long bucketListId,
-            @RequestParam String content) {
+            @RequestBody CommentDto.CommentRequestDto requestDto) {
         Long userId = userAccountService.getUserIdFromToken(token); // JWT에서 사용자 ID 추출
-        Comment comment = commentService.addComment(userId, bucketListId, content);
-        return ApiResponse.onSuccess(Status.COMMENT_ADD_SUCCESS, comment);
+        commentService.addComment(userId, new CommentDto.CommentRequestDto(requestDto.getBucketListId(), requestDto.getContent()));
+        return ApiResponse.onSuccess(Status.COMMENT_ADD_SUCCESS, null); // 성공 메시지만 반환
     }
 
     @GetMapping("/{bucketListId}")
     @Operation(summary = "댓글 조회")
     public ApiResponse<?> getComments(@PathVariable Long bucketListId) {
-        List<Comment> comments = commentService.getCommentsByBucketListId(bucketListId);
+        List<CommentDto.CommentResponseDto> comments = commentService.getCommentsByBucketListId(bucketListId);
         return ApiResponse.onSuccess(Status.COMMENT_READ_SUCCESS, comments);
     }
 }

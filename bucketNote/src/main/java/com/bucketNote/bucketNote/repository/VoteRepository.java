@@ -8,5 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface VoteRepository extends JpaRepository<Vote, Long> {
-    Optional<Vote> findByBucketListIdAndUserId(Long bucketListId, Long userId); // 특정 사용자의 특정 버킷리스트에 대한 투표 조회
+    Optional<Vote> findByBucketListIdAndReceiverId(Long bucketListId, Long receiverId);
+    Optional<Vote> findByBucketListIdAndVoterIdAndReceiverId(Long bucketListId, Long voterId, Long receiverId);
+    Long countByBucketListIdAndIsPossible(Long bucketListId, Boolean isPossible);
 }
