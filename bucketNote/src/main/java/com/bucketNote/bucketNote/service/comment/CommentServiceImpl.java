@@ -11,6 +11,7 @@ import com.bucketNote.bucketNote.domain.entity.User;
 import com.bucketNote.bucketNote.repository.BucketListRepository;
 import com.bucketNote.bucketNote.repository.CommentRepository;
 import com.bucketNote.bucketNote.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
@@ -31,6 +33,10 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentDto.CommentResponseDto> getCommentsByBucketListId(Long bucketListId) {
         if (!bucketListRepository.existsById(bucketListId)) {
             throw new BucketListException.BucketListNonExistsException("유효하지 않은 버킷리스트입니다.");
+        }
+        List<Comment> comments = commentRepository.findAllByBucketListId(bucketListId);
+        if (comments.isEmpty()) {
+            throw new CommentException.CommentNonExistsException("해당 버킷리스트에 댓글이 존재하지 않습니다.");
         }
         return commentRepository.findAllByBucketListId(bucketListId).stream()
                 .map(comment -> new CommentDto.CommentResponseDto(

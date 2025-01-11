@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class CommentExceptionHandler {
-    @ExceptionHandler(CommentException.CommentNonExistsException.class)
-    public ResponseEntity<ApiResponse<?>> handleCommentException(CommentException.CommentNonExistsException ex) {
-        return new ResponseEntity<>(ApiResponse.onFailure(Status.COMMENT_NON_FOUND), HttpStatus.NOT_FOUND);
+public class VoteExceptionHandler {
+    @ExceptionHandler(VoteException.VoteAlreadyExistException.class)
+    public ResponseEntity<ApiResponse<?>> handleCommentException(VoteException.VoteAlreadyExistException ex) {
+        return new ResponseEntity<>(ApiResponse.onFailure(Status.VOTE_ALREADY_EXSISTS), HttpStatus.NOT_FOUND);
     }
 }
