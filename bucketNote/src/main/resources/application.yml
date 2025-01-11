@@ -1,3 +1,64 @@
 spring:
+  application:
+    name: bucketNote
   profiles:
-    active: prod
+    active: prod  # 기본적으로 local 프로파일을 활성화
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    generate-ddl: false
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  jwt:
+    secret: ${JWT_SECRET_KEY}
+
+security:
+  kakao:
+    client_id: ${CLIENT_ID}
+    redirect_uri: ${REDIRECT_URI}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: alpha
+    tagsSorter: alpha
+
+# 프로파일별 설정
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:mysql://localhost:3306/bucketNote
+    username: ${LOCAL_USERNAME}
+    password: ${LOCAL_PASSWORD}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:mysql://ttoksori:3306/bucketNote?useSSL=false
+    username: ${LOCAL_USERNAME}
+    password: ${LOCAL_PASSWORD}
+
+  logging:
+    level:
+      root: INFO
+    file:
+      path: /var/log/bucketNote.log
+
+  springdoc:
+    api-docs:
+      enabled: false
+    swagger-ui:
+      enabled: false
