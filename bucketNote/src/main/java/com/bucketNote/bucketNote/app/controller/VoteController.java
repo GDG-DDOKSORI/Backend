@@ -25,7 +25,7 @@ public class VoteController {
     private final VoteService voteService;              // 투표 서비스
 
     @Operation(summary = "버킷리스트에 투표")
-    @PostMapping("/{receiverId}/{bucketListId}")
+    @PostMapping("/{bucketListId}")
     public ApiResponse<?> voteOnBucketList(
             @RequestHeader("Authorization") String token,
             @RequestParam Long bucketListId,

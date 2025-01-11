@@ -39,4 +39,5 @@ public class BucketListDto {
         private String goalText;
     }
 
+
 }

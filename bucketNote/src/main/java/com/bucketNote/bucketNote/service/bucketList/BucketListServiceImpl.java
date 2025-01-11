@@ -62,4 +62,5 @@ public class BucketListServiceImpl implements BucketListService{
     public boolean validateBucketList(Long userId, Long bucketListId) {
         return bucketListRepository.existsByIdAndUserId(bucketListId, userId);
     }
+
 }

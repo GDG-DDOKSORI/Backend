@@ -46,6 +46,7 @@ public class BucketListController {
     }
 
     // 특정 ID의 버킷리스트 삭제
+    @Operation(summary = "버킷리스트 삭제")
     @DeleteMapping("/{id}")
     public ApiResponse<?> deleteBucketList(@RequestHeader("Authorization") String token,@PathVariable("id") Long id ) {
         Long userId = userAccountService.getUserIdFromToken(token); // 토큰에서 userId를 추출
@@ -53,6 +54,7 @@ public class BucketListController {
         return ApiResponse.onSuccess(Status.BUCKETLIST_DELETE_SUCCESS,null);
     }
     // 새 버킷리스트 생성
+    @Operation(summary = "버킷리스트 생성")
     @PostMapping("/create")
     public ApiResponse<?> createBucketList(
             @RequestHeader("Authorization") String token,
@@ -62,7 +64,17 @@ public class BucketListController {
         BucketList bucketList = bucketListService.createBucketList(userId, createDto.getGoalText());
         return ApiResponse.onSuccess(Status.BUCKETLIST_UPDATE_SUCCESS, null);
     }
+    @Operation(summary = "본인 버킷리스트 확인")
+    @GetMapping("/{bucketListId}/is-owner")
+    public ApiResponse<?> isOwner(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Long bucketListId) {
 
+        Long userId = userAccountService.getUserIdFromToken(token);
+        // 소유 여부 확인
+        boolean isOwner = bucketListService.validateBucketList(userId, bucketListId);
+        return ApiResponse.onSuccess(Status.BUCKETLIST_UPDATE_SUCCESS, isOwner);
+    }
 
 
 }
