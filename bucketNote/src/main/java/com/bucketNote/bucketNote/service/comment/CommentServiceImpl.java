@@ -22,21 +22,9 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final BucketListRepository bucketListRepository;
     private final UserRepository userRepository;
-//    @Override
-//    public Comment addComment(Long userId, Long bucketListId, String content) {
-//        BucketList bucketList = bucketListRepository.findById(bucketListId)
-//                .orElseThrow(() -> new IllegalArgumentException("버킷리스트가 존재하지 않습니다."));
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
-//
-//        Comment comment = new Comment();
-//        comment.setBucketList(bucketList);
-//        comment.setUser(user);
-//        comment.setContent(content);
-//        return commentRepository.save(comment);
-//    }
+
     @Override
-    // 댓글 리스트 조회 (DTO 변환)
+    // 댓글 리스트 조회
     public List<CommentDto.CommentResponseDto> getCommentsByBucketListId(Long bucketListId) {
         return commentRepository.findAllByBucketListId(bucketListId).stream()
                 .map(comment -> new CommentDto.CommentResponseDto(

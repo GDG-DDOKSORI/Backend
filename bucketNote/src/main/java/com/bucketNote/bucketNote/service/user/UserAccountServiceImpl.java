@@ -86,7 +86,7 @@ public class UserAccountServiceImpl implements UserAccountService{
     public List<UserCustomDto.UserSearchDto> getUserIdsByKeyword(String keyword) {
         List<User> users = userRepository.findByEmailContainingOrNameContaining(keyword, keyword);
         if (users.isEmpty()) {
-            throw new IllegalArgumentException("해당 키워드로 검색된 사용자가 없습니다.");
+            throw new UserException.UserNonExistsException("해당 키워드로 검색된 사용자가 없습니다.");
         }
         return users.stream()
                 .map(user -> new UserCustomDto.UserSearchDto(user.getId(), user.getName(), user.getEmail()))

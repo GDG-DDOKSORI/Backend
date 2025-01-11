@@ -32,6 +32,8 @@ public enum Status {
     BUCKETLIST_READ_SUCCESS("200", "SUCCESS", "버킷리스트를 읽어왔습니다."),
     BUCKETLIST_CHECK_SUCCESS("200", "SUCCESS", "버킷리스트를 본인 것인지 확인했습니다."),
     BUCKETLIST_ACHIEVE_SUCCESS("200", "SUCCESS", "버킷리스트 성공 여부 확인했습니다."),
+    BUCKETLIST_NON_PRESENT("404", "FAILURE", "존재하지 않는 버킷리스트입니다."),
+    BUCKETLIST_NO_BY_USER("404", "FAILURE", "해당 사용자가 소유한 버킷리스트가 아닙니다"),
 
     COMMENT_ADD_SUCCESS("200", "SUCCESS", "응원글 추가를 성공했습니다."),
     COMMENT_READ_SUCCESS("200", "SUCCESS", "응원글 조회를 성공했습니다."),

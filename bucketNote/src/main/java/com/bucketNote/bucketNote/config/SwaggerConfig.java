@@ -29,7 +29,7 @@ public class SwaggerConfig {
                 .description("HTTP Prod server");
 
         Server httpsServer = new Server()
-                .url("https://test11-server.ap-northeast-2.elasticbeanstalk.com")
+                .url("https://582e-210-94-220-228.ngrok-free.app")
                 .description("HTTPS Prod server");
 
         SecurityScheme securityScheme = new SecurityScheme()
