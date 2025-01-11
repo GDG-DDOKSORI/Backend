@@ -2,7 +2,7 @@ spring:
   application:
     name: bucketNote
   profiles:
-    active: prod  # 기본적으로 local 프로파일을 활성화
+    active: local  # 기본적으로 local 프로파일을 활성화
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

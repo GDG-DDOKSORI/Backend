@@ -8,8 +8,10 @@ import com.bucketNote.bucketNote.service.vote.VoteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -27,15 +29,14 @@ public class VoteController {
     public ApiResponse<?> voteOnBucketList(
             @RequestHeader("Authorization") String token,
             @RequestParam Long bucketListId,
-            @RequestParam Long receiverId,
             @RequestParam Boolean isPossible) {
         Long voterId = userAccountService.getUserIdFromToken(token);
         // 받는 사용자의 버킷리스트가 존재하는지 확인
-        boolean isBucketListValid = bucketListService.validateBucketList(receiverId, bucketListId);
+        boolean isBucketListValid = bucketListService.validateBucketList(voterId, bucketListId);
         if (!isBucketListValid) {
             return ApiResponse.onFailure(Status.BUCKETLIST_NOT_FOUND, null);
         }
-        voteService.voteOnBucketList(bucketListId, voterId, receiverId, isPossible);
+        voteService.voteOnBucketList(bucketListId, voterId, isPossible);
 
         return ApiResponse.onSuccess(Status.VOTE_SUCCESS,null);
     }
@@ -48,6 +49,14 @@ public class VoteController {
         Map<String, Long> results = voteService.getVoteResults(bucketListId);
 
         return ApiResponse.onSuccess(Status.VOTE_RESULTS_FETCH_SUCCESS, results);
+    }
+    @Operation(summary = "투표에 따른 투표자 이름 조회")
+    @GetMapping("/names")
+    public ResponseEntity<List<String>> getVoterNames(
+            @RequestParam Long bucketListId,
+            @RequestParam boolean isPossible) {
+        List<String> voterNames = voteService.getVoterNamesByBucketListIdAndIsPossible(bucketListId, isPossible);
+        return ResponseEntity.ok(voterNames);
     }
 }
 

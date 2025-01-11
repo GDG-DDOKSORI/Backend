@@ -19,5 +19,6 @@ public interface BucketListRepository extends JpaRepository<BucketList, Long> {
 
     // 존재 여부 확인
     boolean existsByIdAndUserId(Long id, Long userId);
+
 }
 
