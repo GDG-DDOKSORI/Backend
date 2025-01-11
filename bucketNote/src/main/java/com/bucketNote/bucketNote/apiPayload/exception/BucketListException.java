@@ -1,12 +1,15 @@
 package com.bucketNote.bucketNote.apiPayload.exception;
 
-public class BucketListException {
-    public static class BucketListNonExistsException extends UserException {
+public class BucketListException extends RuntimeException{
+    public BucketListException(String message) {
+        super(message);
+    }
+    public static class BucketListNonExistsException extends BucketListException {
         public BucketListNonExistsException(String message) {
             super(message);
         }
     }
-    public static class BucketListNoByUserException extends UserException {
+    public static class BucketListNoByUserException extends BucketListException {
         public BucketListNoByUserException(String message) {
             super(message);
         }

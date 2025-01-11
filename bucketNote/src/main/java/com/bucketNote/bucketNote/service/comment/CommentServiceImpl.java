@@ -1,5 +1,8 @@
 package com.bucketNote.bucketNote.service.comment;
 
+import com.bucketNote.bucketNote.apiPayload.exception.BucketListException;
+import com.bucketNote.bucketNote.apiPayload.exception.CommentException;
+import com.bucketNote.bucketNote.apiPayload.exception.UserException;
 import com.bucketNote.bucketNote.app.dto.BucketListDto;
 import com.bucketNote.bucketNote.app.dto.CommentDto;
 import com.bucketNote.bucketNote.domain.entity.BucketList;
@@ -26,6 +29,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     // 댓글 리스트 조회
     public List<CommentDto.CommentResponseDto> getCommentsByBucketListId(Long bucketListId) {
+        if (!bucketListRepository.existsById(bucketListId)) {
+            throw new BucketListException.BucketListNonExistsException("유효하지 않은 버킷리스트입니다.");
+        }
         return commentRepository.findAllByBucketListId(bucketListId).stream()
                 .map(comment -> new CommentDto.CommentResponseDto(
                         comment.getContent(), // String
@@ -37,11 +43,15 @@ public class CommentServiceImpl implements CommentService {
     }
     // 댓글 추가
     public void addComment(Long userId, CommentDto.CommentRequestDto requestDto) {
+
+        if (requestDto.getContent() == null || requestDto.getContent().trim().isEmpty()) {
+            throw new CommentException.CommentNonExistsException("댓글 내용은 비어 있을 수 없습니다.");
+        }
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+                .orElseThrow(() -> new UserException.UserNonExistsException("유효하지 않은 사용자입니다."));
 
         BucketList bucketList = bucketListRepository.findById(requestDto.getBucketListId())
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 버킷리스트입니다."));
+                .orElseThrow(() -> new BucketListException.BucketListNonExistsException("유효하지 않은 버킷리스트입니다."));
 
         // 새로운 댓글 생성
         Comment comment = new Comment();
