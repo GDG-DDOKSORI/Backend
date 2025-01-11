@@ -24,13 +24,13 @@ public class SwaggerConfig {
                 .url("http://localhost:8080")
                 .description("HTTP local server");
 
-//        Server httpServer2 = new Server()
-//                .url("http://bucketnote.xyz")
-//                .description("HTTP Prod server");
-//
-//        Server httpsServer = new Server()
-//                .url("https://bucketnote.xyz")
-//                .description("HTTPS Prod server");
+        Server httpServer2 = new Server()
+                .url("http://test11-server.ap-northeast-2.elasticbeanstalk.com")
+                .description("HTTP Prod server");
+
+        Server httpsServer = new Server()
+                .url("https://test11-server.ap-northeast-2.elasticbeanstalk.com")
+                .description("HTTPS Prod server");
 
         SecurityScheme securityScheme = new SecurityScheme()
                 .type(SecurityScheme.Type.HTTP)
@@ -45,6 +45,6 @@ public class SwaggerConfig {
                 .components(new Components().addSecuritySchemes("BearerAuth", securityScheme))
                 .info(info)
                 .addSecurityItem(securityRequirement)
-                .servers(List.of(httpServer));
+                .servers(List.of(httpServer,httpServer2,httpsServer));
     }
 }

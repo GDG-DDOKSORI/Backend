@@ -58,7 +58,8 @@ spring:
       path: /var/log/bucketNote.log
 
   springdoc:
-    api-docs:
-      enabled: false
-    swagger-ui:
-      enabled: false
+    springdoc:
+      api-docs:
+        enabled: true
+      swagger-ui:
+        enabled: true
