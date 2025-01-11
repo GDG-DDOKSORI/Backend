@@ -23,7 +23,15 @@ public enum Status {
     NICKNAME_SUCCESS("200", "SUCCESS", "닉네임을 변경했습니다."),
     NICKNAME_GET_SUCCESS("200", "SUCCESS", "닉네임을 읽었습니다."),
     NICKNAME_DUPLICATE("409", "FAILURE", "이미 존재하는 닉네임입니다."),
-    LEAVE_SUCCESS("200", "SUCCESS", "회원 탈퇴를 완료했습니다.");
+    LEAVE_SUCCESS("200", "SUCCESS", "회원 탈퇴를 완료했습니다."),
+    //버킷리스트
+    BUCKETLIST_UPDATE_SUCCESS("200", "SUCCESS", "버킷리스트를 업데이트했습니다."),
+    BUCKETLIST_DELETE_SUCCESS("200", "SUCCESS", "버킷리스트를 삭제했습니다."),
+    BUCKETLIST_NOT_FOUND("404", "FAILURE", "버킷리스트가 존재하지 않습니다."),
+    BUCKETLIST_READ_SUCCESS("200", "SUCCESS", "버킷리스트를 읽어왔습니다."),
+    COMMENT_ADD_SUCCESS("200", "SUCCESS", "응원글 추가를 성공했습니다."),
+    COMMENT_READ_SUCCESS("200", "SUCCESS", "응원글 조회를 성공했습니다."),
+    VOTE_SUCCESS("200", "SUCCESS", "투표에 성공했습니다");
     private final String code;
     private final String result;
     private final String message;

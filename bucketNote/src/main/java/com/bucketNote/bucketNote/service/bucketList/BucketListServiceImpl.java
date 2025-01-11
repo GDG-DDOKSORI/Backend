@@ -1,0 +1,61 @@
+package com.bucketNote.bucketNote.service.bucketList;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.bucketNote.bucketNote.app.dto.BucketListDto;
+import com.bucketNote.bucketNote.domain.entity.BucketList;
+import com.bucketNote.bucketNote.domain.entity.User;
+import com.bucketNote.bucketNote.repository.BucketListRepository;
+import com.bucketNote.bucketNote.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class BucketListServiceImpl implements BucketListService{
+
+    private final BucketListRepository bucketListRepository;
+    private final UserRepository userRepository;
+    // 특정 사용자의 모든 버킷리스트 조회
+    public List<BucketListDto.BucketListReadDto> getBucketListsByUserId(Long userId) {
+        List<BucketList> bucketLists = bucketListRepository.findAllByUserId(userId);
+        return bucketLists.stream()
+                .map(bucketList -> new BucketListDto.BucketListReadDto(bucketList.getId(), bucketList.getGoalText(), bucketList.getCreatedYear()))
+                .collect(Collectors.toList());
+    }
+
+    // 새 버킷리스트 생성
+    public BucketList createBucketList(Long userId, String goalText) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
+        BucketList bucketList = new BucketList();
+        bucketList.setUser(user);
+        bucketList.setGoalText(goalText);
+        bucketList.setCreatedYear(LocalDate.now().getYear()); // 현재 연도 설정
+        return bucketListRepository.save(bucketList); // 저장 후 반환
+    }
+
+
+    // 특정 ID의 버킷리스트 조회 (유저 ID 포함)
+    public BucketList getBucketListById(Long bucketListId, Long userId) {
+        return bucketListRepository.findByIdAndUserId(bucketListId, userId)
+                .orElseThrow(() -> new IllegalArgumentException("BucketList not found for userId: " + userId + " and bucketListId: " + bucketListId));
+    }
+
+    // 버킷리스트 내용 업데이트
+    public BucketList updateBucketList(Long bucketListId, Long userId, String goalText) {
+        BucketList bucketList = getBucketListById(bucketListId, userId);
+        bucketList.setGoalText(goalText); // 내용 업데이트
+        return bucketListRepository.save(bucketList);
+    }
+
+    // 특정 ID의 버킷리스트 삭제
+    public void deleteBucketList(Long bucketListId, Long userId) {
+        BucketList bucketList = getBucketListById(bucketListId, userId);
+        bucketListRepository.delete(bucketList);
+    }
+}
