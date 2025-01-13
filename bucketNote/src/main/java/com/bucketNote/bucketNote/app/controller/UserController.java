@@ -3,6 +3,7 @@ package com.bucketNote.bucketNote.app.controller;
 import com.bucketNote.bucketNote.apiPayload.ApiResponse;
 import com.bucketNote.bucketNote.apiPayload.Status;
 import com.bucketNote.bucketNote.app.dto.UserCustomDto;
+import com.bucketNote.bucketNote.domain.entity.User;
 import com.bucketNote.bucketNote.service.user.UserAccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -55,6 +56,12 @@ public class UserController {
     public ApiResponse<?> searchUserIds(@RequestParam String keyword) {
         List<UserCustomDto.UserSearchDto> userIds = userAccountService.getUserIdsByKeyword(keyword);
         return ApiResponse.onSuccess(Status.USER_ID_PRESENT, userIds);
+    }
+    @Operation(summary = "이름 검색")
+    @GetMapping("/api/user/search/name")
+    public ApiResponse<?> searchUserName(@RequestParam Long id) {
+        String name = userAccountService.getNickname(id);
+        return ApiResponse.onSuccess(Status.NICKNAME_GET_SUCCESS, name);
     }
 }
 
