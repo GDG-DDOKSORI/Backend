@@ -55,7 +55,7 @@ public class VoteServiceImpl implements VoteService {
         User voter = userRepository.findById(voterId)
                 .orElseThrow(() -> new UserException.UserNonExistsException("존재하지 않는 사용자입니다. voterId: " + voterId));
         Optional<Vote> existingVote = voteRepository.findByBucketListIdAndVoterId(bucketListId, voterId);
-
+        User receiver = bucketList.getUser();
         if (existingVote.isPresent()) {
             // 기존 투표가 있을 경우, isPossible 값이 다르면 업데이트
             Vote vote = existingVote.get();
@@ -73,6 +73,7 @@ public class VoteServiceImpl implements VoteService {
             Vote vote = Vote.builder()
                     .bucketListId(bucketListId)
                     .voterId(voterId)
+                    .receiverId(receiver.getId())
                     .isPossible(isPossible)
                     .build();
             voteRepository.save(vote);

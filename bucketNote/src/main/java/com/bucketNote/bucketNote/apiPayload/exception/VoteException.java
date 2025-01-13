@@ -10,4 +10,9 @@ public class VoteException extends RuntimeException {
             super(message);
         }
     }
+    public static class VoteNotAllowedException extends VoteException {
+        public VoteNotAllowedException(String message) {
+            super(message);
+        }
+    }
 }

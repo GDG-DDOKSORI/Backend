@@ -2,6 +2,7 @@ package com.bucketNote.bucketNote.app.controller;
 
 import com.bucketNote.bucketNote.apiPayload.ApiResponse;
 import com.bucketNote.bucketNote.apiPayload.Status;
+import com.bucketNote.bucketNote.apiPayload.exception.VoteException;
 import com.bucketNote.bucketNote.service.bucketList.BucketListService;
 import com.bucketNote.bucketNote.service.user.UserAccountService;
 import com.bucketNote.bucketNote.service.vote.VoteService;
@@ -33,8 +34,8 @@ public class VoteController {
         Long voterId = userAccountService.getUserIdFromToken(token);
         // 받는 사용자의 버킷리스트가 존재하는지 확인
         boolean isBucketListValid = bucketListService.validateBucketList(voterId, bucketListId);
-        if (!isBucketListValid) {
-            return ApiResponse.onFailure(Status.BUCKETLIST_NOT_FOUND, null);
+        if (isBucketListValid) {
+            throw new VoteException.VoteNotAllowedException("본인 투표 불가");
         }
         voteService.voteOnBucketList(bucketListId, voterId, isPossible);
 

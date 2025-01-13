@@ -17,6 +17,16 @@ public class BucketListDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
+    public static class BucketListPublicReadDto {
+        private Long id;
+        private String goalText;
+        private int createdYear;
+        private String userName; // 사용자 이름 추가
+    }
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class BucketListReadDto {
         private Long id;
         private String goalText;

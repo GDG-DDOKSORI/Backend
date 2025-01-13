@@ -13,4 +13,8 @@ public class CommentExceptionHandler {
     public ResponseEntity<ApiResponse<?>> handleCommentException(CommentException.CommentNonExistsException ex) {
         return new ResponseEntity<>(ApiResponse.onFailure(Status.COMMENT_NON_FOUND), HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(CommentException.CommentNonException.class)
+    public ResponseEntity<ApiResponse<?>> handleCommentException(CommentException.CommentNonException ex) {
+        return new ResponseEntity<>(ApiResponse.onFailure(Status.COMMENT_NON), HttpStatus.NOT_FOUND);
+    }
 }

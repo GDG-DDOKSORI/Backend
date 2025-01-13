@@ -38,8 +38,10 @@ public enum Status {
     COMMENT_ADD_SUCCESS("200", "SUCCESS", "응원글 추가를 성공했습니다."),
     COMMENT_READ_SUCCESS("200", "SUCCESS", "응원글 조회를 성공했습니다."),
     COMMENT_NON_FOUND("404", "FAILURE", "댓글을 입력하십시오"),
+    COMMENT_NON("404", "FAILURE", "해당 버킷리스트에 댓글이 없습니다."),
     VOTE_ALREADY_EXSISTS("404", "FAILURE", "중복 투표는 불가합니다."),
     VOTE_RESULTS_FETCH_SUCCESS("200", "SUCCESS", "투표 조회 성공했습니다"),
+    VOTE_NOT_ALLOWED("403", "FAILURE", "본인의 버킷리스트에는 투표할 수 없습니다."),
     VOTE_SUCCESS("200", "SUCCESS", "투표에 성공했습니다");
     private final String code;
     private final String result;

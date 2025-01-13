@@ -42,6 +42,22 @@ public class BucketListServiceImpl implements BucketListService{
         bucketList.setCreatedYear(LocalDate.now().getYear()); // 현재 연도 설정
         return bucketListRepository.save(bucketList); // 저장 후 반환
     }
+    public List<BucketListDto.BucketListPublicReadDto> getPublicBucketListsByUserId(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserException.UserNonExistsException("존재하지 않는 사용자입니다."));
+
+        List<BucketList> bucketLists = bucketListRepository.findAllByUserId(userId);
+
+        return bucketLists.stream()
+                .map(bucketList -> new BucketListDto.BucketListPublicReadDto(
+                        bucketList.getId(),
+                        bucketList.getGoalText(),
+                        bucketList.getCreatedYear(),
+                        user.getName() // 사용자 이름 추가
+                ))
+                .collect(Collectors.toList());
+    }
+
 
 
     // 특정 ID의 버킷리스트 조회 (유저 ID 포함)

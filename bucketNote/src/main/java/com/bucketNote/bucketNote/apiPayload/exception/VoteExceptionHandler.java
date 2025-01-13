@@ -13,4 +13,8 @@ public class VoteExceptionHandler {
     public ResponseEntity<ApiResponse<?>> handleCommentException(VoteException.VoteAlreadyExistException ex) {
         return new ResponseEntity<>(ApiResponse.onFailure(Status.VOTE_ALREADY_EXSISTS), HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(VoteException.VoteNotAllowedException.class)
+    public ResponseEntity<ApiResponse<?>> handleCommentException(VoteException.VoteNotAllowedException ex) {
+        return new ResponseEntity<>(ApiResponse.onFailure(Status.VOTE_NOT_ALLOWED), HttpStatus.NOT_FOUND);
+    }
 }

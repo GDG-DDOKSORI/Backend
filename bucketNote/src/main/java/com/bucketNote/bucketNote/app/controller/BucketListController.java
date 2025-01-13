@@ -34,7 +34,7 @@ public class BucketListController {
     @Operation(summary = "공개된 버킷리스트 조회")
     @GetMapping("/public-bucketlists")
     public ApiResponse<?> getBucketListsByUserId(@RequestParam Long userId) {
-        List<BucketListDto.BucketListReadDto> bucketLists = bucketListService.getBucketListsByUserId(userId);
+        List<BucketListDto.BucketListPublicReadDto> bucketLists = bucketListService.getPublicBucketListsByUserId(userId);
         return ApiResponse.onSuccess(Status.BUCKETLIST_READ_SUCCESS, bucketLists);
     }
     @Operation(summary = "해당 사용자의 모든 버킷리스트 조회")

@@ -36,7 +36,7 @@ public class CommentServiceImpl implements CommentService {
         }
         List<Comment> comments = commentRepository.findAllByBucketListId(bucketListId);
         if (comments.isEmpty()) {
-            throw new CommentException.CommentNonExistsException("해당 버킷리스트에 댓글이 존재하지 않습니다.");
+            return List.of();
         }
         return commentRepository.findAllByBucketListId(bucketListId).stream()
                 .map(comment -> new CommentDto.CommentResponseDto(

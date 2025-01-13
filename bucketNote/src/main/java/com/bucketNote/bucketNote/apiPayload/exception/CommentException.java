@@ -8,5 +8,12 @@ public class CommentException extends RuntimeException {
         public CommentNonExistsException(String message) {
             super(message);
         }
+
+    }
+    public static class CommentNonException extends CommentException {
+        public CommentNonException(String message) {
+            super(message);
+        }
+
     }
 }

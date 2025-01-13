@@ -29,7 +29,7 @@ public class SwaggerConfig {
                 .description("HTTP Prod server");
 
         Server httpsServer = new Server()
-                .url("https://582e-210-94-220-228.ngrok-free.app")
+                .url("https://026f-210-94-220-228.ngrok-free.app")
                 .description("HTTPS Prod server");
 
         SecurityScheme securityScheme = new SecurityScheme()
